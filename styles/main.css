@@ -1,0 +1,14 @@
+body {
+  background-color: rgb(34, 32, 32);
+}
+
+:root {
+  --primary-color: seagreen;
+}
+
+#gameScreen {
+  border: 1px solid var(--primary-color);
+
+  /* width: 600px;
+  height: 600px; */
+}
