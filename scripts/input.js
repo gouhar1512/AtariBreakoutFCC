@@ -1,5 +1,9 @@
 export default class InputHandler {
   constructor(paddle) {
+    this.keyDownHandler(paddle);
+    this.keyUpHandler(paddle);
+  }
+  keyDownHandler(paddle) {
     document.addEventListener("keydown", (event) => {
       switch (event.key) {
         case "Left":
@@ -12,13 +16,13 @@ export default class InputHandler {
           break;
       }
     });
+  }
 
+  keyUpHandler(paddle) {
     document.addEventListener("keyup", (event) => {
       switch (event.key) {
         case "Left":
         case "ArrowLeft":
-          paddle.stop();
-          break;
         case "Right":
         case "ArrowRight":
           paddle.stop();
