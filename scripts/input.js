@@ -1,30 +1,34 @@
+const key = {
+  LEFT: 37,
+  RIGHT: 39,
+  SPACE: 27,
+};
 export default class InputHandler {
-  constructor(paddle) {
+  constructor(paddle, game) {
     this.keyDownHandler(paddle);
     this.keyUpHandler(paddle);
+    this.game = game;
   }
   keyDownHandler(paddle) {
     document.addEventListener("keydown", (event) => {
-      switch (event.key) {
-        case "Left":
-        case "ArrowLeft":
+      switch (event.keyCode) {
+        case key.LEFT:
           paddle.moveLeft();
           break;
-        case "Right":
-        case "ArrowRight":
+        case key.RIGHT:
           paddle.moveRight();
           break;
+        case key.SPACE:
+          this.game.togglePause();
       }
     });
   }
 
   keyUpHandler(paddle) {
     document.addEventListener("keyup", (event) => {
-      switch (event.key) {
-        case "Left":
-        case "ArrowLeft":
-        case "Right":
-        case "ArrowRight":
+      switch (event.keyCode) {
+        case key.LEFT:
+        case key.RIGHT:
           paddle.stop();
           break;
       }

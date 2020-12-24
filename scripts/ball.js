@@ -1,10 +1,12 @@
+import { detectCollision } from "./collisionDetection.js";
+
 export default class Ball {
   constructor(game) {
     this.game = game;
     this.gameWidth = game.gameWidth;
     this.gameHeight = game.gameHeight;
-    this.position = { x: 50, y: 10 };
-    this.speed = { x: 5, y: 4 };
+    this.position = { x: 50, y: 300 };
+    this.speed = { x: 5, y: -4 };
     this.size = 10;
   }
 
@@ -33,20 +35,36 @@ export default class Ball {
     )
       this.speed.y = -this.speed.y;
 
-    // check collision with paddle
-    let bottomOfball = this.position.y + this.size;
-    let topOfPaddle = this.game.paddle.position.y;
-    let leftSideOfPaddle = this.game.paddle.position.x;
-    let widthOfPaddle = this.game.paddle.width;
-    let rightSideOfPaddle = leftSideOfPaddle + widthOfPaddle;
+    // Collision with paddle
+    if (detectCollision(this, this.game.paddle)) {
+      let h = this.game.paddle.width / 2;
+      let b = Math.abs(
+        this.game.paddle.position.x +
+          this.game.paddle.width / 2 -
+          this.position.x
+      );
+      let p = Math.floor(Math.sqrt(h * h - b * b));
 
-    if (
-      bottomOfball >= topOfPaddle &&
-      this.position.x >= leftSideOfPaddle &&
-      this.position.x + this.size <= rightSideOfPaddle
-    ) {
-      this.speed.y = -this.speed.y;
-      this.position.y = topOfPaddle - this.size;
+      let xc = b,
+        yc = p;
+      // coordinate on circle with center as center of paddle and diameter as width of paddle
+
+      this.position.y = this.game.paddle.position.y - this.size;
+      console.log(b / 10);
+      if (
+        this.game.paddle.position.x + this.game.paddle.width / 2 <
+        this.position.x
+      ) {
+        this.speed.x = Math.abs(b) / 10;
+      } else {
+        this.speed.x = -Math.abs(b) / 10;
+      }
+
+      if (this.speed.y < 0) {
+        this.speed.y = Math.abs(p) / 10;
+      } else {
+        this.speed.y = -Math.abs(p) / 10;
+      }
     }
   }
 }
